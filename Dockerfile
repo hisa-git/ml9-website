@@ -36,15 +36,13 @@ COPY . /app/
 # Set ownership and permissions
 RUN chown -R wagtail:wagtail /app
 
-# Use user "wagtail" to run the build commands below and the server itself.
+# Create logs directory
+RUN mkdir -p /home/LogFiles && chown -R wagtail:wagtail /home/LogFiles
+
+#Change user
 USER wagtail
 
-# Create directory for logging:
-RUN mkdir -p /home/LogFiles
-
-# Create staticfiles directory and collect static files.
 RUN mkdir -p /app/staticfiles && python manage.py collectstatic --noinput --clear
-
 # Copy and set permissions for startup script
 COPY --chown=wagtail:wagtail startup.sh /app/startup.sh
 
