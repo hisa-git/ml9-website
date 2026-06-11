@@ -31,7 +31,9 @@ ALLOWED_HOSTS = [
 # --------------------------------------------------
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://velychko.pythonanywhere.com",
+    origin.strip()
+    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "http://localhost:8000").split(",")
+    if origin.strip()
 ]
 
 SECURE_SSL_REDIRECT = True
@@ -97,7 +99,6 @@ MEDIA_URL = "/media/"
 
 WAGTAILADMIN_BASE_URL = os.environ.get(
     "WAGTAILADMIN_BASE_URL", 
-    "https://velychko.pythonanywhere.com"
 )
 
 # --------------------------------------------------
