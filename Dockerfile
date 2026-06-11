@@ -39,6 +39,9 @@ RUN chown -R wagtail:wagtail /app
 # Use user "wagtail" to run the build commands below and the server itself.
 USER wagtail
 
+# Create directory for logging:
+RUN mkdir -p /home/LogFiles
+
 # Create staticfiles directory and collect static files.
 RUN mkdir -p /app/staticfiles && python manage.py collectstatic --noinput --clear
 
