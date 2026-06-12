@@ -22,9 +22,7 @@ SECRET_KEY = os.environ.get(
 # HOSTS
 # --------------------------------------------------
 
-ALLOWED_HOSTS = [
-    "velychko.pythonanywhere.com",
-]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
 # --------------------------------------------------
 # CSRF / HTTPS
@@ -36,7 +34,6 @@ CSRF_TRUSTED_ORIGINS = [
     if origin.strip()
 ]
 #Temporaly logging
-import os
 print("CSRF_TRUSTED_ORIGINS:", os.environ.get("CSRF_TRUSTED_ORIGINS"))
 
 SECURE_SSL_REDIRECT = True
