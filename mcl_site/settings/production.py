@@ -33,8 +33,9 @@ CSRF_TRUSTED_ORIGINS = [
     for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "http://localhost:8000").split(",")
     if origin.strip()
 ]
-#Temporaly logging
-print("CSRF_TRUSTED_ORIGINS:", os.environ.get("CSRF_TRUSTED_ORIGINS"))
+
+import logging
+logging.warning(f"CSRF_TRUSTED_ORIGINS raw: {os.environ.get('CSRF_TRUSTED_ORIGINS')}")
 
 SECURE_SSL_REDIRECT = True
 
