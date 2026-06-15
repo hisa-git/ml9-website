@@ -34,8 +34,9 @@ CSRF_TRUSTED_ORIGINS = [
     if origin.strip()
 ]
 
-import logging
-logging.warning(f"CSRF_TRUSTED_ORIGINS raw: {os.environ.get('CSRF_TRUSTED_ORIGINS')}")
+print(f"DEBUG {'='*40}")
+print(f"CSRF_TRUSTED_ORIGINS raw: {os.environ.get('CSRF_TRUSTED_ORIGINS')}")
+print(f"DEBUG {'='*40}")
 
 SECURE_SSL_REDIRECT = True
 

@@ -14,7 +14,14 @@ A Wagtail-powered site for Миколаївський ліцей №9.
    - Prepare a CSV `redirects.csv` with `old_path,new_path[,is_permanent]`.
    - Import with:
 
+      ```bash
+      # Linux/macOS
+      python3 manage.py import_redirects redirects.csv --dry-run
+      python3 manage.py import_redirects redirects.csv
+      ```
+
       ```powershell
+      # Windows
       D:/mcl-site/venv/Scripts/python.exe manage.py import_redirects redirects.csv --dry-run
       D:/mcl-site/venv/Scripts/python.exe manage.py import_redirects redirects.csv
       ```
@@ -24,7 +31,14 @@ A Wagtail-powered site for Миколаївський ліцей №9.
 
 ## Development
 
+```bash
+# Linux/macOS
+python3 manage.py migrate
+python3 manage.py runserver
+```
+
 ```powershell
+# Windows
 D:/mcl-site/venv/Scripts/python.exe manage.py migrate
 D:/mcl-site/venv/Scripts/python.exe manage.py runserver
 ```
