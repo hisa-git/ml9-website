@@ -21,7 +21,7 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     zlib1g-dev \
     libwebp-dev \
     curl \
- && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Use /app folder as a directory where the source code is stored.
 WORKDIR /app
@@ -39,10 +39,12 @@ RUN chown -R wagtail:wagtail /app
 # Create logs directory
 RUN mkdir -p /home/LogFiles && chown -R wagtail:wagtail /home/LogFiles
 
-#Change user
+# Create staticfiles directory
+RUN mkdir -p /app/staticfiles && chown -R wagtail:wagtail /app/staticfiles
+
+# Change user
 USER wagtail
 
-RUN mkdir -p /app/staticfiles && python manage.py collectstatic --noinput --clear
 # Copy and set permissions for startup script
 COPY --chown=wagtail:wagtail startup.sh /app/startup.sh
 
