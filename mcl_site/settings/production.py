@@ -30,13 +30,13 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
-    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "http://localhost:8000").split(",")
+    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
     if origin.strip()
 ]
 
-print(f"DEBUG {'='*40}")
-print(f"CSRF_TRUSTED_ORIGINS raw: {os.environ.get('CSRF_TRUSTED_ORIGINS')}")
-print(f"DEBUG {'='*40}")
+
+if not CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS = ["https://ml9-website-production.up.railway.app","https://mcl.mk.ua"]
 
 SECURE_SSL_REDIRECT = True
 
