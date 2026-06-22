@@ -9,20 +9,15 @@ from django.core.exceptions import ImproperlyConfigured
 
 DEBUG = False
 
-secret = os.environ.get("SECRET_KEY")
-if not secret:
-    raise ImproperlyConfigured("SECRET_KEY environment variable is required")
-SECRET_KEY = secret
-
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "temporary-build-secret"
+)
 # --------------------------------------------------
 # HOSTS
 # --------------------------------------------------
 
-ALLOWED_HOSTS = [
-    h.strip() 
-    for h in os.environ.get("ALLOWED_HOSTS", "").split(",") 
-    if h.strip()
-]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
 # --------------------------------------------------
 # CSRF / HTTPS
