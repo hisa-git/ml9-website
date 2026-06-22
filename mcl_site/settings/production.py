@@ -9,15 +9,20 @@ from django.core.exceptions import ImproperlyConfigured
 
 DEBUG = False
 
-# secret = os.environ.get("SECRET_KEY")
-# if not secret:
-#     raise ImproperlyConfigured("SECRET_KEY environment variable is required")
-# SECRET_KEY = secret
+secret = os.environ.get("SECRET_KEY")
+if not secret:
+    raise ImproperlyConfigured("SECRET_KEY environment variable is required")
+SECRET_KEY = secret
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "temporary-build-secret"
-)
+# --------------------------------------------------
+# HOSTS
+# --------------------------------------------------
+
+ALLOWED_HOSTS = [
+    h.strip() 
+    for h in os.environ.get("ALLOWED_HOSTS", "").split(",") 
+    if h.strip()
+]
 
 # --------------------------------------------------
 # CSRF / HTTPS
@@ -29,43 +34,69 @@ CSRF_TRUSTED_ORIGINS = [
     if origin.strip()
 ]
 
-if not CSRF_TRUSTED_ORIGINS:
-    CSRF_TRUSTED_ORIGINS = [
-        "https://ml9-website-production.up.railway.app",
-        "https://mcl.mk.ua"
-    ]
-
-ALLOWED_HOSTS = [
-    h.strip() 
-    for h in os.environ.get("ALLOWED_HOSTS", "").split(",") 
-    if h.strip()
-]
-
-if not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = [
-        "ml9-website-production.up.railway.app",
-        "mcl.mk.ua",
-        "www.mcl.mk.ua"
-    ]
-
 SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = False  # ← Important for Wagtail
-CSRF_COOKIE_SAMESITE = 'Lax'
 
-SESSION_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_HTTPONLY = True
+# Additional security headers
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# --------------------------------------------------
+# DATABASE
+# --------------------------------------------------
+
+if os.environ.get("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.environ["DATABASE_URL"],
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+
+# --------------------------------------------------
+# MIDDLEWARE (ORDER IS IMPORTANT)
+# --------------------------------------------------
+
+# Remove SecurityMiddleware if exists (base.py)
+try:
+    MIDDLEWARE.remove("django.middleware.security.SecurityMiddleware")
+except ValueError:
+    pass
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    *MIDDLEWARE,
+]
+
+# --------------------------------------------------
+# STATIC FILES
+# --------------------------------------------------
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATICFILES_STORAGE = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
+
+# --------------------------------------------------
+# MEDIA FILES
+# --------------------------------------------------
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # --------------------------------------------------
 # WAGTAIL
 # --------------------------------------------------
 
 WAGTAILADMIN_BASE_URL = os.environ.get(
-    "WAGTAILADMIN_BASE_URL",
-    "https://ml9-website-production.up.railway.app"
+    "WAGTAILADMIN_BASE_URL", 
 )
 
 # --------------------------------------------------
