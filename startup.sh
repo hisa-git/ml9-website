@@ -10,6 +10,9 @@ python manage.py migrate --noinput
 echo "Creating cache table..."
 python manage.py createcachetable
 
+echo "Creating superuser..."
+python manage.py createsuperuser --noinput --email "kirillhisa.work@gmail.com" || true
+
 echo "Starting server..."
 exec gunicorn mcl_site.wsgi:application \
     --bind 0.0.0.0:${PORT:-8000} \
