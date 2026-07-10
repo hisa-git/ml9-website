@@ -4,8 +4,8 @@ from django.views.decorators.cache import cache_page
 from wagtail.models import Page, Orderable
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.images import get_image_model_string
 from modelcluster.fields import ParentalKey
-
 
 class HomePage(Page):
     """Main landing page of the site"""
@@ -23,7 +23,8 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('body'),
         InlinePanel('hero_images', label="Слайдер на головній"),
-        InlinePanel('quick_links', label="Швидкі посилання"),
+        InlinePanel("partners", label="Організації"),
+        InlinePanel('quick_links', label="Шв`идкі посилання"),
         FieldPanel('cta_text'),
         FieldPanel('cta_link'),
     ]
@@ -88,6 +89,30 @@ class HomePage(Page):
     def __str__(self) -> str:
         return self.title
 
+
+class HomePartner(Orderable):
+    page = ParentalKey(
+        "home.HomePage",
+        related_name="partners",
+        on_delete=models.CASCADE,
+    )
+
+    name = models.CharField("Назва", max_length=100)
+
+    logo = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name="Логотип",
+    )
+
+    url = models.URLField("Посилання", blank=True)
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("logo"),
+        FieldPanel("url"),
+    ]
 
 class HeroImage(Orderable):
     page = ParentalKey(HomePage, on_delete=models.CASCADE, related_name='hero_images')
