@@ -1,11 +1,45 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Page not found{% endblock %}
+{% block title %}Сторінку не знайдено{% endblock %}
 
 {% block body_class %}template-404{% endblock %}
 
 {% block content %}
-<h1>Page not found</h1>
-
-<h2>Sorry, this page could not be found.</h2>
+<section class="page-hero error-hero d-flex align-items-center">
+  <div class="hero-bg-pattern"></div>
+  <div class="container">
+    <div class="row justify-content-center text-center">
+      <div class="col-12 col-lg-8">
+        <span class="hero-badge">Помилка 404</span>
+        <h1 class="hero-title mt-3">
+          Ця сторінка <span class="highlight">загубилася</span>
+        </h1>
+        <p class="hero-subtitle mt-3">
+          Можливо, сторінку було переміщено або її більше не існує.
+          Перевірте правильність адреси або скористайтеся посиланнями нижче.
+        </p>
+        <div class="hero-buttons d-flex flex-column flex-md-row flex-wrap gap-3 mt-4 justify-content-center">
+          <a href="/" class="btn btn-primary-custom btn-lg d-inline-flex align-items-center justify-content-center">
+            <i class="bi bi-house-door me-2"></i>На головну
+          </a>
+          <a href="/schedule/" class="btn btn-outline-light btn-lg d-inline-flex align-items-center justify-content-center">
+            <i class="bi bi-calendar-week me-2"></i>Розклад занять
+          </a>
+          <a href="/search/" class="btn btn-outline-light btn-lg d-inline-flex align-items-center justify-content-center">
+            <i class="bi bi-search me-2"></i>Пошук по сайту
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path
+        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C57.1,118.92,156.63,69.08,321.39,56.44Z"
+        fill="var(--gray-50)"
+      />
+    </svg>
+  </div>
+</section>
 {% endblock %}
